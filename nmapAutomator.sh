@@ -448,12 +448,12 @@ UDPScan() {
                         echo
                         printf "${YELLOW}Making a script scan on UDP ports: $(echo "${udpPorts}" | sed 's/,/, /g')\n"
                         printf "${NC}\n"
-                        if [ -f /usr/share/nmap/scripts/vulners.nse ]; then
+                        if [ -f "${NMAP_PATH}/share/nmap/scripts/vulners.nse" ]; then
                                 sudo -v
                                 nmapProgressBar "sudo ${nmapType} -sCVU --script vulners --script-args mincvss=7.0 -p${udpPorts} --open -oN nmap/UDP_Extra_${HOST}.nmap ${HOST} ${DNSSTRING}" 2
                         else
-                                sudo -v
-                                nmapProgressBar "sudo ${nmapType} -sCVU -p${udpPorts} --open -oN nmap/UDP_Extra_${HOST}.nmap ${HOST} ${DNSSTRING}" 2
+                            sudo -v
+                            nmapProgressBar "sudo ${nmapType} -sCVU -p${udpPorts} --open -oN nmap/UDP_Extra_${HOST}.nmap ${HOST} ${DNSSTRING}" 2
                         fi
                 else
                         echo
@@ -486,7 +486,7 @@ vulnsScan() {
                 fi
 
                 # Ensure the vulners script is available, then run it with nmap
-                if [ ! -f /usr/share/nmap/scripts/vulners.nse ]; then
+                if [ ! -f "${NMAP_PATH}/share/nmap/scripts/vulners.nse" ]; then
                         printf "${RED}Please install 'vulners.nse' nmap script:\n"
                         printf "${RED}https://github.com/vulnersCom/nmap-vulners\n"
                         printf "${RED}\n"
