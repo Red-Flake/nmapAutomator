@@ -14,6 +14,7 @@ fi
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Define IFS character
@@ -116,7 +117,7 @@ fi
 # No args needed
 usage() {
         echo
-        printf "${RED}Usage: sudo $(basename $0) -H/--host ${NC}<TARGET-IP>${RED} -t/--type ${NC}<TYPE>${RED}\n"
+        printf "${BLUE}Usage: sudo $(basename $0) -H/--host ${NC}<TARGET-IP>${BLUE} -t/--type ${NC}<TYPE>${BLUE}\n"
         printf "${GREEN}Example: sudo $(basename $0) --host --host 10.1.1.1 --type All${GREEN}\n"
         printf "${YELLOW}Optional: [-r/--remote ${NC}<REMOTE MODE>${YELLOW}] [-d/--dns ${NC}<DNS SERVER>${YELLOW}] [-o/--output ${NC}<OUTPUT DIRECTORY>${YELLOW}] [-s/--static-nmap ${NC}<STATIC NMAP PATH>${YELLOW}]\n\n"
         printf "Scan Types:\n"
