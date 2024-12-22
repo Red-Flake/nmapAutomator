@@ -118,7 +118,7 @@ fi
 usage() {
         echo
         printf "${BLUE}Usage: sudo $(basename $0) -H/--host ${NC}<TARGET-IP>${BLUE} -t/--type ${NC}<TYPE>${BLUE}\n"
-        printf "${GREEN}Example: sudo $(basename $0) --host --host 10.1.1.1 --type All${GREEN}\n"
+        printf "${GREEN}Example: sudo $(basename $0) --host 10.1.1.1 --type All${GREEN}\n"
         printf "${YELLOW}Optional: [-r/--remote ${NC}<REMOTE MODE>${YELLOW}] [-d/--dns ${NC}<DNS SERVER>${YELLOW}] [-o/--output ${NC}<OUTPUT DIRECTORY>${YELLOW}] [-s/--static-nmap ${NC}<STATIC NMAP PATH>${YELLOW}]\n\n"
         printf "Scan Types:\n"
         printf "${YELLOW}\tNetwork : ${NC}Shows all live hosts in the host's network ${YELLOW}(~15 seconds)\n"
