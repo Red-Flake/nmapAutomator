@@ -1,8 +1,13 @@
 # nmapAutomator
 
 A script you can run in the background!
+
 <br>
+
+## Showcase
+
 ![nmapAutomator](https://i.imgur.com/3cMJIPr.gif)
+
 <br>
 
 ## Summary
