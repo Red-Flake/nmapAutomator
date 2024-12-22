@@ -1,14 +1,22 @@
-#!/bin/sh
-#by @21y4d
-# sudo nmap.sh --host 10.1.1.1 --type All
+#!/usr/bin/env bash
+
+# original project made by @21y4d
+# forked an modified by @Mag1cByt3s
+# sudo nmap.sh --host <IP> --type All
+
+# Check if the script is running as root
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root or with sudo." >&2
+  exit 1
+fi
+
 # Define ANSI color variables
-echo ""
-echo "START AS ROOT! USAGE: sudo nmap.sh --host 10.1.1.1 --type All"
-echo ""
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
+
+# Define IFS character
 origIFS="${IFS}"
 
 # Start timer
@@ -108,7 +116,8 @@ fi
 # No args needed
 usage() {
         echo
-        printf "${RED}Usage: $(basename $0) -H/--host ${NC}<TARGET-IP>${RED} -t/--type ${NC}<TYPE>${RED}\n"
+        printf "${RED}Usage: sudo $(basename $0) -H/--host ${NC}<TARGET-IP>${RED} -t/--type ${NC}<TYPE>${RED}\n"
+        printf "${GREEN}Example: sudo $(basename $0) --host --host 10.1.1.1 --type All${GREEN}\n"
         printf "${YELLOW}Optional: [-r/--remote ${NC}<REMOTE MODE>${YELLOW}] [-d/--dns ${NC}<DNS SERVER>${YELLOW}] [-o/--output ${NC}<OUTPUT DIRECTORY>${YELLOW}] [-s/--static-nmap ${NC}<STATIC NMAP PATH>${YELLOW}]\n\n"
         printf "Scan Types:\n"
         printf "${YELLOW}\tNetwork : ${NC}Shows all live hosts in the host's network ${YELLOW}(~15 seconds)\n"
