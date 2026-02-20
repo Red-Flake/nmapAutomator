@@ -113,6 +113,26 @@ else
         printf "${RED}\nNmap is not installed and -s is not used. Running in Remote mode...${NC}\n\n" && REMOTE=true
 fi
 
+# Determine nmap install prefix (used to locate optional NSE scripts like vulners.nse)
+NMAP_PATH=""
+if [ -n "${NMAPPATH}" ]; then
+        if type realpath >/dev/null 2>&1; then
+                NMAPPATH_REAL="$(realpath "${NMAPPATH}" 2>/dev/null || echo "${NMAPPATH}")"
+        elif type readlink >/dev/null 2>&1; then
+                NMAPPATH_REAL="$(readlink -f "${NMAPPATH}" 2>/dev/null || echo "${NMAPPATH}")"
+        else
+                NMAPPATH_REAL="${NMAPPATH}"
+        fi
+        NMAP_PATH="$(cd "$(dirname "${NMAPPATH_REAL}")/.." 2>/dev/null && pwd -P)"
+fi
+
+# Check whether nmap can load a given NSE script name (e.g. "vulners")
+nseScriptAvailable() {
+        [ -z "${NMAPPATH}" ] && return 1
+        "${NMAPPATH}" --script-help "$1" >/dev/null 2>&1 && return 0
+        [ -n "${NMAP_PATH}" ] && [ -f "${NMAP_PATH}/share/nmap/scripts/$1.nse" ]
+}
+
 # Print usage menu and exit. Used when issues are encountered
 # No args needed
 usage() {
@@ -448,7 +468,7 @@ UDPScan() {
                         echo
                         printf "${YELLOW}Making a script scan on UDP ports: $(echo "${udpPorts}" | sed 's/,/, /g')\n"
                         printf "${NC}\n"
-                        if [ -f "${NMAP_PATH}/share/nmap/scripts/vulners.nse" ]; then
+                        if nseScriptAvailable "vulners"; then
                                 sudo -v
                                 nmapProgressBar "sudo ${nmapType} -sCVU --script vulners --script-args mincvss=7.0 -p${udpPorts} --open -oN nmap/UDP_Extra_${HOST}.nmap ${HOST} ${DNSSTRING}" 2
                         else
@@ -486,7 +506,7 @@ vulnsScan() {
                 fi
 
                 # Ensure the vulners script is available, then run it with nmap
-                if [ ! -f "${NMAP_PATH}/share/nmap/scripts/vulners.nse" ]; then
+                if ! nseScriptAvailable "vulners"; then
                         printf "${RED}Please install 'vulners.nse' nmap script:\n"
                         printf "${RED}https://github.com/vulnersCom/nmap-vulners\n"
                         printf "${RED}\n"
